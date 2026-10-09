@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# AI endpoints
+RewriteRule ^ai\.json$ ai.json.php [L]
+RewriteRule ^llms\.txt$ llms.txt.php [L]
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Blog posts: /blog/slug
+RewriteRule ^blog/([a-z0-9\-]+)/?$ index.php?route=post&slug=$1 [QSA,L]
+RewriteRule ^blog/?$ index.php?route=blog [QSA,L]
+
+# PDF export: /pdf/page-slug
+RewriteRule ^pdf/([a-z0-9\-]+)/?$ pdf.php?slug=$1 [QSA,L]
+
+# Skip real files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route everything else to index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Protect includes and sql
+RewriteRule ^(includes|sql)/ - [F,L]
