@@ -1,6 +1,6 @@
 # Leonardowin CMS
 
-PHP + MySQL CMS (Bootstrap 5 + Quill). Dizajn inšpirovaný leonardowin.sk.
+PHP + MySQL CMS (Bootstrap 5 + Quill).
 
 ## Funkcie
 
