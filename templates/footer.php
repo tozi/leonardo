@@ -72,9 +72,62 @@
 </script>
 <?php endif; ?>
 
+<!-- Image Modal -->
+<div class="image-modal" id="imageModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="image-modal-backdrop" data-close-modal="true"></div>
+    <div class="image-modal-dialog">
+        <button type="button" class="image-modal-close" aria-label="Zavrieť obrázok">×</button>
+        <img id="imageModalImage" src="" alt="">
+        <div id="imageModalCaption" class="image-modal-caption"></div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/share.js" defer></script>
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('imageModalImage');
+    const modalCaption = document.getElementById('imageModalCaption');
+    const modalClose = modal?.querySelector('.image-modal-close');
+
+    const closeModal = () => {
+        if (!modal) return;
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+    };
+
+    const openModal = (src, title) => {
+        if (!modal || !modalImage) return;
+        modalImage.src = src;
+        modalImage.alt = title || '';
+        modalCaption.textContent = title || '';
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+    };
+
+    document.querySelectorAll('[data-gallery-trigger]').forEach((trigger) => {
+        trigger.addEventListener('click', function () {
+            openModal(this.dataset.src, this.dataset.title || '');
+        });
+    });
+
+    modalClose?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', function (event) {
+        if (event.target === modal || event.target.hasAttribute('data-close-modal')) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal && modal.classList.contains('is-open')) {
+            closeModal();
+        }
+    });
+});
+
 window.addEventListener('scroll', () => {
     document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 20);
 });
