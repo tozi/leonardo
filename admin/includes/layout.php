@@ -12,6 +12,7 @@ function admin_header($page_title = 'Dashboard') {
         'menus.php' => ['☰', 'Menu'],
         'galleries.php' => ['🖼', 'Galérie'],
         'languages.php' => ['🌍', 'Jazyky'],
+        'ui-dictionary.php' => ['📝', 'UI texty'],
         'templates.php' => ['🎨', 'Šablóny'],
         'media.php' => ['📁', 'Médiá'],
         'settings.php' => ['⚙', 'Nastavenia'],
