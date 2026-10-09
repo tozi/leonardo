@@ -13,12 +13,20 @@ $images = $gallery ? get_gallery_images($gallery['id']) : [];
         <?php if ($gallery && !empty($images)): ?>
             <div class="row g-3 mt-4">
                 <?php foreach ($images as $img): ?>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gallery-item">
-                        <img src="<?= e(UPLOADS_URL . '/' . $img['filename']) ?>" alt="<?= e($img['alt_text'] ?? $img['title'] ?? '') ?>" loading="lazy">
-                        <?php if ($img['title']): ?><div class="caption"><?= e($img['title']) ?></div><?php endif; ?>
+                    <?php $imgSrc = UPLOADS_URL . '/' . $img['filename']; ?>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <button
+                            type="button"
+                            class="gallery-item"
+                            data-gallery-trigger
+                            data-src="<?= e($imgSrc) ?>"
+                            data-title="<?= e($img['title'] ?? '') ?>"
+                            aria-label="Otvoriť fotku v zväčšenom okne"
+                        >
+                            <img src="<?= e($imgSrc) ?>" alt="<?= e($img['alt_text'] ?? $img['title'] ?? '') ?>" loading="lazy">
+                            <?php if (!empty($img['title'])): ?><span class="caption"><?= e($img['title']) ?></span><?php endif; ?>
+                        </button>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
         <?php elseif ($gallery): ?>
