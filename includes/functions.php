@@ -321,7 +321,7 @@ function clear_login_attempts() {
 /** Sanitize HTML content from editor – allow safe tags only */
 function sanitize_html($html) {
     if ($html === null || $html === '') return '';
-    $allowed = '<p><br><br/><strong><b><em><i><u><h1><h2><h3><h4><h5><h6><ul><ol><li><a><img><table><thead><tbody><tr><th><td><blockquote><pre><code><hr><span><div><figure><figcaption><iframe><s><strike><del><sub><sup>';
+    $allowed = '<p><br><br/><strong><b><em><i><u><h1><h2><h3><h4><h5><h6><ul><ol><li><a><img><table><thead><tbody><tr><th><td><blockquote><pre><code><hr><span><div><figure><figcaption><iframe><s>';
     $html = strip_tags($html, $allowed);
     // Remove on* event handlers and javascript: URLs
     $html = preg_replace('/\s on\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/iu', '', $html);
@@ -532,6 +532,70 @@ function og_locale($code) {
 /** Malý slovník pre pevné texty vo frontende (sk / ostatné = en). */
 function t($sk, $en) {
     return current_lang() === 'sk' ? $sk : $en;
+}
+
+/** UI dictionary: generický slovník týchto textov pre frontend a admin */
+function ui_dict($key, $lang = null, $fallback = null) {
+    $lang = $lang ?: current_lang();
+    $key = trim((string)$key);
+    if ($key === '') return $fallback ?? '';
+    try {
+        $stmt = db()->prepare('SELECT d.default_text, t.translated_text
+            FROM ui_dictionary d
+            LEFT JOIN ui_dictionary_translations t
+                ON t.dict_id = d.id AND t.lang_code = ?
+            WHERE d.dict_key = ?
+            LIMIT 1');
+        $stmt->execute([$lang, $key]);
+        $row = $stmt->fetch();
+        if ($row) {
+            if (trim((string)$row['translated_text']) !== '') {
+                return $row['translated_text'];
+            }
+            if (trim((string)$row['default_text']) !== '') {
+                return $row['default_text'];
+            }
+        }
+    } catch (Exception $e) {}
+    return $fallback ?? $key;
+}
+
+function ui_dict_exists($key) {
+    try {
+        $stmt = db()->prepare('SELECT 1 FROM ui_dictionary WHERE dict_key = ? LIMIT 1');
+        $stmt->execute([$key]);
+        return (bool) $stmt->fetchColumn();
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+function save_ui_dict_translation($key, $lang, $value) {
+    $key = trim((string)$key);
+    $lang = trim((string)$lang);
+    if ($key === '' || $lang === '') return false;
+    try {
+        $stmt = db()->prepare('SELECT id FROM ui_dictionary WHERE dict_key = ? LIMIT 1');
+        $stmt->execute([$key]);
+        $row = $stmt->fetch();
+        if (!$row) {
+            db()->prepare('INSERT INTO ui_dictionary (dict_key, category, default_text, description, sort_order)
+                VALUES (?, ?, ?, ?, 999)')->execute([$key, 'custom', $value ?: $key, 'Custom UI key']);
+            $row = ['id' => db()->lastInsertId()];
+        }
+        $value = trim((string)$value);
+        if ($value === '') {
+            db()->prepare('DELETE FROM ui_dictionary_translations WHERE dict_id = ? AND lang_code = ?')->execute([(int)$row['id'], $lang]);
+            return true;
+        }
+        $ins = db()->prepare('INSERT INTO ui_dictionary_translations (dict_id, lang_code, translated_text)
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE translated_text = VALUES(translated_text)');
+        $ins->execute([(int)$row['id'], $lang, $value]);
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
 }
 
 // ========== SEO / Open Graph / zdieľanie ==========
