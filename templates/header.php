@@ -160,7 +160,7 @@
                         </ul>
                     </div>
                     <div class="header-cta">
-                        <a href="/kontakt" class="btn btn-primary btn-sm">Nezáväzný dopyt</a>
+                        <a href="/kontakt" class="btn btn-primary btn-sm"><?= e(ui_dict('btn_inquiry')) ?></a>
                     </div>
                 </div>
             </div>
