@@ -1,0 +1,198 @@
+/* Leonardowin CMS Admin – Bootstrap + custom */
+:root {
+    --rw-primary: #E30613;
+    --sidebar-w: 250px;
+    --sidebar-bg: #1e1e2d;
+}
+
+body.admin-body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f4f5f7;
+    font-size: .9rem;
+}
+
+.admin-sidebar {
+    width: var(--sidebar-w);
+    background: var(--sidebar-bg);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 1040;
+}
+.admin-sidebar .brand {
+    padding: 1.1rem 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.admin-sidebar .brand span { color: var(--rw-primary); }
+.admin-sidebar .nav-link {
+    color: #a2a3b7;
+    padding: .65rem 1.25rem;
+    font-size: .9rem;
+    border-left: 3px solid transparent;
+}
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    color: #fff;
+    background: rgba(255,255,255,.06);
+}
+.admin-sidebar .nav-link.active {
+    border-left-color: var(--rw-primary);
+}
+
+.admin-main {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+}
+.admin-topbar {
+    height: 56px;
+    background: #fff;
+    border-bottom: 1px solid #e2e5ea;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.admin-content { padding: 1.5rem; }
+
+.btn-primary {
+    background-color: var(--rw-primary) !important;
+    border-color: var(--rw-primary) !important;
+}
+.btn-primary:hover {
+    background-color: #B80510 !important;
+    border-color: #B80510 !important;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: .5rem;
+    padding: 1.25rem;
+}
+.stat-card .stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--rw-primary);
+}
+
+/* Sortable menu items */
+.sortable-list { list-style: none; padding: 0; margin: 0; }
+.sortable-list li {
+    background: #f9fafb;
+    border: 1px solid #e2e5ea;
+    border-radius: .375rem;
+    padding: .65rem 1rem;
+    margin-bottom: .4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: grab;
+}
+.sortable-list li.sortable-ghost {
+    opacity: .4;
+    background: #e0e7ff;
+}
+.sortable-list .handle {
+    cursor: grab;
+    color: #999;
+    margin-right: .75rem;
+    font-size: 1.1rem;
+}
+
+.gallery-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: .75rem;
+}
+.gallery-admin-item {
+    position: relative;
+    border-radius: .375rem;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #f0f0f0;
+}
+.gallery-admin-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+/* ===== Quill editor ===== */
+.rw-editor .ql-toolbar.ql-snow { border-color: #dee2e6; border-radius: .375rem .375rem 0 0; background: #fafafa; }
+.rw-editor .ql-container.ql-snow { border-color: #dee2e6; border-radius: 0 0 .375rem .375rem; font-family: Inter, system-ui, sans-serif; font-size: 15px; background: #fff; }
+.rw-editor .ql-editor { min-height: 360px; max-height: 70vh; overflow-y: auto; }
+.rw-editor .ql-editor img { max-width: 100%; height: auto; }
+.rw-editor .rw-editor-source {
+    width: 100%; min-height: 360px; display: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px;
+    border: 1px solid #dee2e6; border-radius: 0 0 .375rem .375rem; padding: .75rem; resize: vertical;
+}
+.rw-editor .rw-source-btn { width: auto !important; font-size: 12px; font-weight: 600; padding: 0 8px !important; }
+.rw-editor .rw-source-btn.active { color: #06c; }
+.rw-editor.rw-source-on .ql-toolbar .ql-formats:not(.rw-source-group) { display: none; }
+.rw-editor.rw-source-on .ql-container { display: none; }
+.rw-editor.rw-uploading .ql-container { opacity: .6; }
+
+/* Preklady – záložky */
+.rw-translations .nav-link { font-size: .9rem; }
+.rw-translations .badge-done { font-size: .65rem; vertical-align: middle; }
+
+
+/* ===== Responzivita administrácie ===== */
+html, body.admin-body { overflow-x: hidden; }
+.admin-main { min-width: 0; width: 100%; }
+.min-w-0 { min-width: 0; }
+.admin-menu-toggle { display: none; font-size: 1.1rem; line-height: 1; padding: .35rem .6rem; }
+.admin-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1035; }
+.admin-sidebar { transition: transform .25s ease; }
+
+/* staré komponenty (form-row, table-wrap, card-header s nadpisom) */
+.admin-content .card-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; }
+.admin-content .card-header h2 { font-size: 1rem; font-weight: 600; margin: 0; }
+.admin-content .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.admin-content .table-wrap table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.admin-content .table-wrap th, .admin-content .table-wrap td { padding: .6rem .75rem; border-bottom: 1px solid #e9ecef; text-align: left; vertical-align: middle; }
+.admin-content .table-wrap th { font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; color: #6c757d; }
+.admin-content .table-responsive > table { min-width: 560px; }
+.admin-content .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.admin-content .form-group { margin-bottom: 1rem; }
+.admin-content .form-group label { display: block; margin-bottom: .35rem; font-weight: 500; }
+.admin-content .form-group input[type=text], .admin-content .form-group input[type=email],
+.admin-content .form-group input[type=password], .admin-content .form-group input[type=number],
+.admin-content .form-group select, .admin-content .form-group textarea {
+    width: 100%; padding: .45rem .75rem; border: 1px solid #ced4da; border-radius: .375rem; font: inherit; background: #fff;
+}
+.admin-content img, .admin-content video { max-width: 100%; height: auto; }
+.admin-content .nav-tabs { border-bottom: 1px solid #dee2e6; }
+
+@media (max-width: 991.98px) {
+    .admin-sidebar { transform: translateX(-100%); width: min(280px, 85vw); box-shadow: none; }
+    .admin-main { margin-left: 0; }
+    .admin-menu-toggle { display: inline-block; }
+    body.admin-nav-open .admin-sidebar { transform: translateX(0); box-shadow: 0 0 30px rgba(0,0,0,.4); }
+    body.admin-nav-open .admin-backdrop { display: block; }
+    body.admin-nav-open { overflow: hidden; }
+    .admin-sidebar .nav-link { padding: .8rem 1.25rem; }
+}
+@media (max-width: 767.98px) {
+    .admin-topbar { padding: 0 .75rem; }
+    .admin-content { padding: .75rem; }
+    .admin-content .form-row { grid-template-columns: 1fr; gap: 0; }
+    .admin-content .card-body { padding: .9rem; }
+    .stat-card { padding: .9rem; }
+    .stat-card .stat-value { font-size: 1.4rem; }
+    .sortable-list li { flex-wrap: wrap; gap: .5rem; }
+    .gallery-admin-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+    .rw-editor .ql-editor { min-height: 260px; max-height: 60vh; }
+    .rw-editor .ql-toolbar.ql-snow { padding: 4px; }
+    .btn, .form-control, .form-select { min-height: 38px; }
+    .admin-content .btn-sm { min-height: 32px; }
+}
+@media (max-width: 575.98px) {
+    .admin-topbar h1 { font-size: 1rem !important; }
+}
